@@ -10,11 +10,20 @@ class Comment extends Model
 
     protected $table = 'icomments__comments';
     public $translatedAttributes = [];
-    protected $fillable = ['comment', 'approved', 'guest_name', 'guest_email'];
-    protected $with = ['commenter'];
-    protected $casts = [
-        'approved' => 'boolean'
+    protected $fillable = [
+        'comment',
+        'approved',
+        'guest_name',
+      'commentable_type',
+        'guest_email',
+        'options'
     ];
+    protected $with = ['commenter','commentable'];
+    protected $casts = [
+        'approved' => 'boolean',
+        'options' => 'array'
+    ];
+    protected $fakeColumns = ['options'];
 
 
     public function commenter()
@@ -45,5 +54,22 @@ class Comment extends Model
     {
         return $this->belongsTo(Comment::class, 'child_id');
     }
+
+
+    public function getOptionsAttribute($value){
+        $options = json_decode($value);
+
+        if(isset($options->mainImage))
+            $options->mainImage = url($options->mainImage);
+        if(isset($options->secondaryImage))
+            $options->secondaryImage = url($options->secondaryImage);
+
+        return $options;
+    }
+
+    public function setOptionsAttribute($value){
+        $this->attributes['options'] = json_encode($value);
+    }
+
 
 }

@@ -38,6 +38,7 @@ class IcommentsServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishConfig('icomments', 'permissions');
+        $this->publishConfig('icomments', 'config');
 
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     }

@@ -4,8 +4,10 @@ namespace Modules\Icomments\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Icomments\Events\CommentWasCreated;
 use Modules\Icomments\Http\Requests\CreateCommentRequest;
 use Modules\Icomments\Repositories\CommentRepository;
+use Modules\Icomments\Transformers\CommentTransformer;
 use Modules\Ihelpers\Http\Controllers\Api\BaseApiController;
 
 
@@ -97,36 +99,32 @@ class CommentApiController extends BaseApiController
         try {
             $data = $request->input('attributes') ?? [];//Get data  
             //Validate Request
-
-
-            $user=null;
-
-            // If guest commenting is turned off, authorize this action.
-            if (config('asgard.comments.guest_commenting') == false) {
-                $user = \Auth::guard('api')->user() ?? \Auth::user();
-            }
-
-            // Define guest rules if user is not logged in.
-            if (!$user) {
-                $guest_rules = [
-                    'guest_name' => 'required|string|max:255',
-                    'guest_email' => 'required|string|email|max:255',
-                ];
-            }
+            $params = $this->getParamsRequest($request);
+            
             $this->validateRequestApi(new CreateCommentRequest($data));
 
-            $model = $data['commentable_type']::find($request->commentable_id);
+            $commentable = $data['commentable_type']::find($data["commentable_id"]);
 
             $data['approved']=!config('comments.approval_required');
 
             //Break if no found item
-            if (!$model) throw new Exception('Item not found', 404);
+            if (!$commentable) throw new \Exception('Commentable type not found', 404);
 
+            $data["commentable"] = $commentable;
+            $data["commenter"] = $params->user;
             $dataEntity = $this->comment->create($data);
 
+          
             //Response
             $response = ["data" => new CommentTransformer($dataEntity)];
             \DB::commit(); //Commit to Data Base
+
+            $dataEntity->commentable()->associate($data['commentable']);
+            $dataEntity->commenter()->associate($data['commenter']);
+            $dataEntity->save();
+            
+            event(new CommentWasCreated($data["commentable_type"],$data["commentable_id"],$dataEntity));
+          
         } catch (\Exception $e) {
             \DB::rollback();//Rollback to Data Base
             $status = $this->getStatusError($e->getCode());

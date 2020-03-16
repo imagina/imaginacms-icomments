@@ -11,16 +11,16 @@ class CommentWasCreated implements StoringMedia
     /**
      * @var array
      */
-    public $data;
-    /**
-     * @var Comment
-     */
-    public $entity;
+    public $comment;
+    public $type;
+    public $id;
 
-    public function __construct($category, array $data)
+
+    public function __construct($type,$id,$comment)
     {
-        $this->data = $data;
-        $this->entity = $category;
+        $this->comment = $comment;
+        $this->type = $type;
+        $this->id = $id;
     }
 
     /**
@@ -29,7 +29,7 @@ class CommentWasCreated implements StoringMedia
      */
     public function getEntity()
     {
-        return $this->entity;
+        return $this->comment;
     }
 
     /**
@@ -38,6 +38,6 @@ class CommentWasCreated implements StoringMedia
      */
     public function getSubmissionData()
     {
-        return $this->data;
+        return $this->comment;
     }
 }

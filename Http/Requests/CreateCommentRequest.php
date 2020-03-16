@@ -10,8 +10,8 @@ class CreateCommentRequest extends BaseFormRequest
     {
         return [
             'commentable_type' => 'required|string',
-            'commentable_id' => 'required|string|min:1',
-            'message' => 'required|string'
+            'commentable_id' => 'required|min:1',
+            'comment' => 'required|string'
 
         ];
     }
@@ -33,7 +33,7 @@ class CreateCommentRequest extends BaseFormRequest
             'commentable_type.string' => trans('icomments::comments.messages.type is string'),
             'commentable_id.required' => trans('icomments::comments.messages.id require'),
             'commentable_id.min'=>trans('icomments::comments.messages.id min 1'),
-            'message.required' => trans('icomments::comments.messages.message is require'),
+            'comment.required' => trans('icomments::comments.messages.message is require'),
         ];
     }
 

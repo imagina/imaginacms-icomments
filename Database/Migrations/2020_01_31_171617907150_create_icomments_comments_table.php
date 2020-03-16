@@ -28,11 +28,12 @@ class CreateIcommentsCommentsTable extends Migration
             $table->index(["commentable_type", "commentable_id"]);
 
             $table->text('comment');
+            $table->text('options')->nullable();
 
             $table->boolean('approved')->default(true);
 
             $table->unsignedBigInteger('child_id')->nullable();
-            $table->foreign('child_id')->references('id')->on('comments')->onDelete('cascade');
+            $table->foreign('child_id')->references('id')->on('icomments__comments')->onDelete('cascade');
 
             // Your fields
             $table->timestamps();
