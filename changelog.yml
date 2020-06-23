@@ -1,7 +1,7 @@
 url: https://github.com/imagina/asgardcms-icomments
 versions:
 
-    "1.1.0":
+    "1.0.0":
         added:
           - fake options in comment entity
           - cache decorator neccesary
@@ -9,8 +9,5 @@ versions:
           - Broadcast comment added
           - transformersCommentable and availableEntities config for dinamically trnasformer
 
-    "1.0.0":
-        added:
-        - Initial Module
 
 
