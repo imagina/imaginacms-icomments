@@ -14,11 +14,12 @@ class Comment extends Model
         'comment',
         'approved',
         'guest_name',
-      'commentable_type',
+        'commentable_type',
         'guest_email',
+        'user_id',
         'options'
     ];
-    protected $with = ['commenter','commentable'];
+    protected $with = ['commenter', 'commentable'];
     protected $casts = [
         'approved' => 'boolean',
         'options' => 'array'
@@ -55,19 +56,26 @@ class Comment extends Model
         return $this->belongsTo(Comment::class, 'child_id');
     }
 
+    public function user()
+    {
+        $driver = config('asgard.user.config.driver');
 
-    public function getOptionsAttribute($value){
+        return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User");
+    }
+    public function getOptionsAttribute($value)
+    {
         $options = json_decode($value);
 
-        if(isset($options->mainImage))
+        if (isset($options->mainImage))
             $options->mainImage = url($options->mainImage);
-        if(isset($options->secondaryImage))
+        if (isset($options->secondaryImage))
             $options->secondaryImage = url($options->secondaryImage);
 
         return $options;
     }
 
-    public function setOptionsAttribute($value){
+    public function setOptionsAttribute($value)
+    {
         $this->attributes['options'] = json_encode($value);
     }
 
