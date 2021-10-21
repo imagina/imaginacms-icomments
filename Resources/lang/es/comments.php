@@ -18,6 +18,7 @@ return [
     'form' => [
     ],
     'messages' => [
+        'not infor' => 'No existe información disponible'
     ],
     'validation' => [
     ],
