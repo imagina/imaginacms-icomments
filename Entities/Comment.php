@@ -3,10 +3,12 @@
 namespace Modules\Icomments\Entities;
 
 use Modules\Core\Icrud\Entities\CrudModel;
+use Modules\Media\Support\Traits\MediaRelation;
 
 class Comment extends CrudModel
 {
     
+    use MediaRelation;
 
     protected $table = 'icomments__comments';
     public $transformer = 'Modules\Icomments\Transformers\CommentTransformer';
