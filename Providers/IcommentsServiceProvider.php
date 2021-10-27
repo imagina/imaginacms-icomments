@@ -8,6 +8,7 @@ use Modules\Core\Traits\CanPublishConfiguration;
 use Modules\Core\Events\BuildingSidebar;
 use Modules\Core\Events\LoadingBackendTranslations;
 use Modules\Icomments\Listeners\RegisterIcommentsSidebar;
+use Illuminate\Support\Facades\Blade;
 
 class IcommentsServiceProvider extends ServiceProvider
 {
@@ -47,6 +48,8 @@ class IcommentsServiceProvider extends ServiceProvider
         $this->mergeConfigFrom($this->getModuleConfigFilePath('icomments', 'permissions'), "asgard.icomments.permissions");
 
         $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+
+        $this->registerComponents();
     }
 
     /**
@@ -57,6 +60,14 @@ class IcommentsServiceProvider extends ServiceProvider
     public function provides()
     {
         return array();
+    }
+
+    /**
+    * Register components
+    */
+    private function registerComponents()
+    {
+        Blade::componentNamespace("Modules\Icomments\View\Components", 'icomments');
     }
 
     private function registerBindings()
