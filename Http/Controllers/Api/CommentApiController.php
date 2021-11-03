@@ -7,7 +7,9 @@ use Modules\Core\Icrud\Controllers\BaseCrudController;
 use Modules\Icomments\Entities\Comment;
 use Modules\Icomments\Repositories\CommentRepository;
 
-use Modules\Icomments\Transformers\CommentTransformer;
+use Illuminate\Http\Request;
+//Default transformer
+use Modules\Core\Icrud\Transformers\CrudResource;
 
 class CommentApiController extends BaseCrudController
 {
@@ -26,37 +28,26 @@ class CommentApiController extends BaseCrudController
      * @param  Request $request
      * @return Response
      */
-
     public function create(Request $request)
     {
         \DB::beginTransaction();
         try {
-            $data = $request->input('attributes') ?? [];//Get data  
+            $modelData = $request->input('attributes') ?? [];//Get data  
             
             //Validate Request
             if (isset($this->model->requestValidation['create'])) {
-              $this->validateRequestApi(new $this->model->requestValidation['create']($data));
+              $this->validateRequestApi(new $this->model->requestValidation['create']($modelData));
             }
 
-            $commentable = $data['commentable_type']::find($data["commentable_id"]);
-
+            // Check if the comment required approval and set the value to approved
             $data['approved']=!config('comments.approval_required');
 
-            //Break if no found item
-            if (!$commentable) throw new \Exception('Commentable type not found', 404);
+            // Save model
+            $model = $this->modelRepository->create($modelData);
 
-            $data["commentable"] = $commentable;
-            $data["commenter"] = $params->user;
-            $dataEntity = $this->modelRepository->create($data);
-
-          
             //Response
-            $response = ["data" => new CommentTransformer($dataEntity)];
+            $response = ["data" => CrudResource::transformData($model)];
             \DB::commit(); //Commit to Data Base
-
-            $dataEntity->commentable()->associate($data['commentable']);
-            $dataEntity->commenter()->associate($data['commenter']);
-            $dataEntity->save();
             
         } catch (\Exception $e) {
             \DB::rollback();//Rollback to Data Base
@@ -66,6 +57,7 @@ class CommentApiController extends BaseCrudController
         //Return response
         return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
     }
+
 
 
 }

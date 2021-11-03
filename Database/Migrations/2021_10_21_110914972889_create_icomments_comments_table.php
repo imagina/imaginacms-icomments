@@ -24,9 +24,9 @@ class CreateIcommentsCommentsTable extends Migration
             $table->string('guest_name')->nullable();
             $table->string('guest_email')->nullable();
 
-            $table->string("commentable_type");
-            $table->string("commentable_id");
-            $table->index(["commentable_type", "commentable_id"]);
+            $table->morphs('commentable');
+            $table->index('commentable_id');
+            $table->index('commentable_type');
 
             $table->text('comment');
             $table->text('options')->nullable();

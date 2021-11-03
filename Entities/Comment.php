@@ -20,8 +20,9 @@ class Comment extends CrudModel
      protected $fillable = [
         'comment',
         'approved',
-        'guest_name',
         'commentable_type',
+        'commentable_id',
+        'guest_name',
         'guest_email',
         'user_id',
         'options'
