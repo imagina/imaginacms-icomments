@@ -19,14 +19,15 @@ php artisan module:migrate Icomments
 
 1. Add this trait in the model
 ```bash
-	use Modules\Isite\Traits\WithComments;
-
-	use WithComments;
+use Modules\Isite\Traits\WithComments;
+```
+```bash
+use WithComments;
 ```
 
-2. Get comments
-	- model = Model where comments will be obtained
-	- approved (optional) = If it is not sent, you will get all the comments of the model
+2. Component Params:
+	- model - entity = Model where comments will be obtained
+	- approved - boolean - (optional) = If it is not sent, you will get all the comments of the model
 	
 ```bash
 <x-icomments::comments :model="$product" :approved="true" />
