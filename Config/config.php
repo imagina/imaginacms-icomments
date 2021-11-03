@@ -9,13 +9,6 @@ return [
    * will need to be approved by setting the `approved` column to
    * `true` for each comment.
    *
-   * To see only approved comments use this code in your view:
-   *
-   * @comments([
-   *         'model' => $book,
-   *         'approved' => true
-   *     ])
-   *
    */
   'approval_required' => false,
   
@@ -26,17 +19,5 @@ return [
    * address in order to post a comment.
    */
   'guest_commenting' => false,
-  
-  "transformersCommentable" => [
-    
-    "Modules\\Ievent\\Entities\\Event" => "Modules\\Ievent\\Transformers\\EventSimpleTransformer",
-    "Modules\\Iteam\\Entities\\Team" => "Modules\\Iteam\\Transformers\\SimpleTeamTransformer"
-  
-  ],
-  
-  "availableEntities" => [
-    "Modules\\Ievent\\Entities\\Event",
-    "Modules\\Iteam\\Entities\\Team"
-  ]
 
 ];
