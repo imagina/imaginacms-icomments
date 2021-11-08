@@ -11,6 +11,14 @@ return [
    *
    */
   'approval_required' => false,
+
+
+  "mediaFillable" => [
+    'comment' => [
+      'mainimage' => 'single',
+      'gallery' => 'multiple',
+    ]
+  ],
   
   /**
    * Set this option to `true` to enable guest commenting.
