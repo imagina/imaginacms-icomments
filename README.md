@@ -28,6 +28,7 @@ use Commentable;
 2. Component Params:
 	- model - entity = Model where comments will be obtained
 	- approved - boolean - (optional) = If it is not sent, you will get all the comments of the model
+	- showRating - boolean (default true) = Show rating (stars in each comment)
 	
 ```bash
 <x-icomments::comments :model="$product" :approved="true" />

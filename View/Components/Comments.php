@@ -13,19 +13,21 @@ class Comments extends Component
   public $params;
   public $model;
   public $approved;
+  public $showRating;
 
   /**
    * Create a new component instance.
    *
    * @return void
    */
-  public function __construct($layout = "comments-layout-1", $model, $approved = false,$params = [])
+  public function __construct($layout = "comments-layout-1", $model, $approved = false, $showRating = true, $params = [])
   {
 
     $this->view = "icomments::frontend.components.comments.layouts.$layout.index";
     $this->model = $model;
     $this->approved = $approved;
     $this->params = $params;
+    $this->showRating = $showRating;
 
     $this->getItems();
     
