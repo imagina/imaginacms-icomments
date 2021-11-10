@@ -33,28 +33,10 @@ class Comments extends Component
 
   private function getItems(){
 
-    /*
-    * Option 1 - Require add trait with relations in the model (Example Trait WithComments - Icommerce Module)
-    */
     if($this->approved)
       $this->items = $this->model->approvedComments;
     else
       $this->items = $this->model->comments;
-   
-
-    /*
-    * Option 2 - Just testing
-    */
-    /*
-    $this->params['filter']['commentableType'] = get_class($this->model);
-    $this->params['filter']['commentableId'] = $this->model->id ;
-    
-    $repository = app("Modules\Icomments\Repositories\CommentRepository");
-    $this->items = $repository->getItemsBy(json_decode(json_encode($this->params)));
-    */
-
-    // In View
-    //<x-icomments::comments :model="$product" :params="['filter' => ['approved' => true]]"/>
 
   }
   /**

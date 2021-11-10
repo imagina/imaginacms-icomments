@@ -19,10 +19,10 @@ php artisan module:migrate Icomments
 
 1. Add this trait in the model
 ```bash
-use Modules\Isite\Traits\WithComments;
+use Modules\Icomments\Traits\Commentable;
 ```
 ```bash
-use WithComments;
+use Commentable;
 ```
 
 2. Component Params:

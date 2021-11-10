@@ -1,4 +1,4 @@
-<div id="commentsComponents" class="comments comments-layout-1">
+<div class="commentsComponents comments comments-layout-1">
 	
 	@if($items && $items->count())
 
@@ -26,10 +26,6 @@
             </div>
         @endforeach
 
-    @else
-        <div class="alert alert-info" role="alert">
-            {{trans('icomments::comments.messages.not infor')}}
-        </div>
     @endif
    	
 </div>

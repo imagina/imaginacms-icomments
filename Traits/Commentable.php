@@ -1,10 +1,6 @@
 <?php
 
-
 namespace Modules\Icomments\Traits;
-
-
-use Modules\Icomments\Entities\Comment;
 
 trait Commentable
 {
@@ -27,7 +23,7 @@ trait Commentable
      */
     public function comments()
     {
-        return $this->morphMany(Comment::class, 'commentable');
+        return $this->morphMany('Modules\Icomments\Entities\Comment', 'commentable');
     }
 
     /**
@@ -35,6 +31,6 @@ trait Commentable
      */
     public function approvedComments()
     {
-        return $this->morphMany(Comment::class, 'commentable')->where('approved', true);
+        return $this->morphMany('Modules\Icomments\Entities\Comment', 'commentable')->where('approved', true);
     }
 }
