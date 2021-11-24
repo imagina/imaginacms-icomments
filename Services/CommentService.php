@@ -31,17 +31,18 @@ class CommentService
      			"user_id" => $model->user_id,
      			"commentable_type" => get_class($model),
      			"commentable_id" => $model->id,
-     			"comment" => $comment,
      			"approved" => !config('comments.approval_required') // Check if the comment required approval and set the value to approved
      		];
-
-     		$comment = $this->comment->create($data);
+     		$dataToSave = array_merge($data,$comment);
+     		
+     		$comment = $this->comment->create($dataToSave);
 
 			return $comment;
 
      	} catch (\Exception $e) {
 
-     		\Log::info('Icomment: Comment Service - Create - ERROR: '.$e->getMessage().' Code:'.$e->getErrorCode());
+     		//dd($e);
+     		//\Log::info('Icomment: Comment Service - Create - ERROR: '.$e->getMessage().' Code:'.$e->getErrorCode());
         	\Log::error("error: " . $e->getMessage() . "\n" . $e->getFile() . "\n" . $e->getLine() . $e->getTraceAsString());
 
 
