@@ -4,11 +4,12 @@ namespace Modules\Icomments\Entities;
 
 use Modules\Core\Icrud\Entities\CrudModel;
 use Modules\Media\Support\Traits\MediaRelation;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Comment extends CrudModel
 {
     
-    use MediaRelation;
+    use MediaRelation, BelongsToTenant;
 
     protected $table = 'icomments__comments';
     public $transformer = 'Modules\Icomments\Transformers\CommentTransformer';
@@ -20,6 +21,7 @@ class Comment extends CrudModel
      protected $fillable = [
         'comment',
         'approved',
+        'internal',
         'commentable_type',
         'commentable_id',
         'guest_name',
@@ -47,21 +49,14 @@ class Comment extends CrudModel
     {
         return $this->morphTo();
     }
-
-    /**
-     * Returns all comments that this comment is the parent of.
-     */
-    public function children()
-    {
-        return $this->hasMany(Comment::class, 'child_id');
-    }
+    
 
     /**
      * Returns the comment to which this comment belongs to.
      */
     public function parent()
     {
-        return $this->belongsTo(Comment::class, 'child_id');
+        return $this->belongsTo(Comment::class, 'parent_id');
     }
 
     public function user()
@@ -70,15 +65,6 @@ class Comment extends CrudModel
 
         return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User");
     }
-
-    public function getOptionsAttribute($value)
-    {
-        return json_decode($value);
-    }
-
-    public function setOptionsAttribute($value)
-    {
-        $this->attributes['options'] = json_encode($value);
-    }
+    
 
 }

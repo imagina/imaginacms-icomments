@@ -22,20 +22,21 @@ class CommentService
     * @param $comment
     * @return 
     */
-	public function create($model,$comment){
+	public function create($model,$data){
 
 		
      	try {
 
-     		$data = [
-     			"user_id" => $model->user_id,
+     		$commentData = [
+     			"user_id" => $data["user_id"] ?? $model->user_id ?? \Auth::id(),
      			"commentable_type" => get_class($model),
      			"commentable_id" => $model->id,
-     			"comment" => $comment,
-     			"approved" => !config('comments.approval_required') // Check if the comment required approval and set the value to approved
+     			"comment" => $data["comment"],
+     			"approved" => $data["approved"] ?? !config('comments.approval_required'), // Check if the comment required approval and set the value to approved
+     			"internal" => $data["internal"] ?? false
      		];
 
-     		$comment = $this->comment->create($data);
+     		$comment = $this->comment->create($commentData);
 
 			return $comment;
 
