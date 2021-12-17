@@ -36,6 +36,10 @@ class CommentService
      			"internal" => $data["internal"] ?? false
      		];
 
+     		//Validation Gallery
+     		if(isset($data["medias_multi"]))
+     			$commentData["medias_multi"] = $data["medias_multi"];
+
      		$comment = $this->comment->create($commentData);
 
 			return $comment;
