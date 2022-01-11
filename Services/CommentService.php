@@ -46,9 +46,7 @@ class CommentService
 
      	} catch (\Exception $e) {
 
-     		\Log::info('Icomment: Comment Service - Create - ERROR: '.$e->getMessage().' Code:'.$e->getErrorCode());
-        	\Log::error("error: " . $e->getMessage() . "\n" . $e->getFile() . "\n" . $e->getLine() . $e->getTraceAsString());
-
+     		\Log::error('Icomments: Services|CommentService|Message: '.$e->getMessage().' | FILE: '.$e->getFile().' | LINE: '.$e->getLine());
 
       	}
 
