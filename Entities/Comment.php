@@ -30,7 +30,7 @@ class Comment extends CrudModel
         'options'
     ];
 
-    protected $with = ['commenter', 'commentable'];
+    //protected $with = ['commenter', 'commentable'];
     protected $casts = [
         'approved' => 'boolean',
         'options' => 'array'
