@@ -8,7 +8,9 @@ class CreateCommentRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+        return [
+            'comment' => 'required'
+        ];
     }
 
     public function translationRules()
@@ -23,7 +25,9 @@ class CreateCommentRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
+        return [
+            'comment.required' => trans('requestable::common.messages.field required')
+        ];
     }
 
     public function translationMessages()
