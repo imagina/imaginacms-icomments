@@ -47,7 +47,7 @@ class IcommentsServiceProvider extends ServiceProvider
         $this->mergeConfigFrom($this->getModuleConfigFilePath('icomments', 'settings-fields'), "asgard.icomments.settings-fields");
         $this->mergeConfigFrom($this->getModuleConfigFilePath('icomments', 'permissions'), "asgard.icomments.permissions");
 
-        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+        //$this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
 
         $this->registerComponents();
     }
