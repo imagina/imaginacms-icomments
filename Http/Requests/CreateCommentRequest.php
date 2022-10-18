@@ -9,7 +9,9 @@ class CreateCommentRequest extends BaseFormRequest
     public function rules()
     {
         return [
-            'comment' => 'required'
+            'comment' => 'required',
+            'commentable_type' => 'required',
+            'commentable_id' => 'required'
         ];
     }
 
@@ -26,7 +28,9 @@ class CreateCommentRequest extends BaseFormRequest
     public function messages()
     {
         return [
-            'comment.required' => trans('requestable::common.messages.field required')
+            'comment.required' => trans('requestable::common.messages.field required'),
+            'commentable_type.required' => trans('requestable::common.messages.field required'),
+            'commentable_id.required' => trans('requestable::common.messages.field required')
         ];
     }
 
