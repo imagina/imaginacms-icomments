@@ -30,7 +30,7 @@ class Comment extends CrudModel
         'options'
     ];
 
-    protected $with = ['commenter', 'commentable'];
+    //protected $with = ['commenter', 'commentable'];
     protected $casts = [
         'approved' => 'boolean',
         'options' => 'array'
@@ -64,6 +64,12 @@ class Comment extends CrudModel
         $driver = config('asgard.user.config.driver');
 
         return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User");
+    }
+
+    public function userProfile()
+    {
+        $driver = config('asgard.user.config.driver');
+        return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User", 'user_id');
     }
     
 

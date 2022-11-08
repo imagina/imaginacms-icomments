@@ -4,6 +4,8 @@ namespace Modules\Icomments\Transformers;
 
 use Modules\Core\Icrud\Transformers\CrudResource;
 
+use Modules\Iprofile\Transformers\UserTransformer;
+
 class CommentTransformer extends CrudResource
 {
   /**
@@ -13,6 +15,8 @@ class CommentTransformer extends CrudResource
   */
   public function modelAttributes($request)
   {
-    return [];
+    return [
+      'userProfile' => new UserTransformer($this->whenLoaded('userProfile')),
+    ];
   }
 }

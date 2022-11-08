@@ -15,11 +15,13 @@ class CommentApiController extends BaseCrudController
 {
   public $model;
   public $modelRepository;
+  public $commentService;
 
   public function __construct(Comment $model, CommentRepository $modelRepository)
   {
     $this->model = $model;
     $this->modelRepository = $modelRepository;
+    $this->commentService = app("Modules\Icomments\Services\CommentService");
   }
 
   /**
@@ -39,11 +41,9 @@ class CommentApiController extends BaseCrudController
               $this->validateRequestApi(new $this->model->requestValidation['create']($modelData));
             }
 
-            // Check if the comment required approval and set the value to approved
-            $data['approved']=!config('comments.approval_required');
-
-            // Save model
-            $model = $this->modelRepository->create($modelData);
+            // Model if exist
+            // Model Data (attributes)
+            $model = $this->commentService->create(null,$modelData);
 
             //Response
             $response = ["data" => CrudResource::transformData($model)];
@@ -52,7 +52,7 @@ class CommentApiController extends BaseCrudController
         } catch (\Exception $e) {
             \DB::rollback();//Rollback to Data Base
             $status = $this->getStatusError($e->getCode());
-            $response = ["errors" => $e->getMessage()];
+            $response = ["messages" => [["message" => $e->getMessage(), "type" => "error"]]];
         }
         //Return response
         return response()->json($response ?? ["data" => "Request successful"], $status ?? 200);
