@@ -16,6 +16,7 @@ class IcommentsDatabaseSeeder extends Seeder
     {
         Model::unguard();
 
+        $this->call(IcommentsModuleTableSeeder::class);
         // $this->call("OthersTableSeeder");
     }
 }
