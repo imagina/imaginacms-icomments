@@ -26,7 +26,7 @@ class EloquentCommentRepository extends EloquentCrudRepository implements Commen
    * @param $filter
    * @return mixed
    */
-  public function filterQuery($query, $filter, $params = false)
+  public function filterQuery($query, $filter, $params)
   {
 
     /**
