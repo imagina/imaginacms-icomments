@@ -28,7 +28,8 @@ class Comment extends CrudModel
     'guest_name',
     'guest_email',
     'user_id',
-    'options'
+    'options',
+    "type"
   ];
 
   //protected $with = ['commenter', 'commentable'];
