@@ -8,7 +8,7 @@ class CommentService
 {
 
 	private $comment;
-
+	private $log = "Icomments:: Services|CommentService";
 
 	public function __construct(
 		CommentRepository $comment
@@ -33,7 +33,8 @@ class CommentService
      			"commentable_id" => $data["commentable_id"] ?? $model->id,
      			"comment" => $data["comment"],
      			"approved" => $data["approved"] ?? !config('comments.approval_required'), // Check if the comment required approval and set the value to approved
-     			"internal" => $data["internal"] ?? false
+     			"internal" => $data["internal"] ?? false,
+				"type" => $data["type"] ?? null
      		];
 
      		//Validation Gallery
@@ -52,5 +53,6 @@ class CommentService
 
 	}
 
+	
 
 }
