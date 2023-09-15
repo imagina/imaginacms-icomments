@@ -53,6 +53,43 @@ class CommentService
 
 	}
 
-	
+	/**
+	 * Update Types in Comments searching a text
+	 */
+	public function updateTypeByText(array $dataToSearch, string $commentableType = null)
+	{
+		\Log::info($this->log.'updateTypeByText');
+
+		foreach ($dataToSearch as $data) {
+			
+			//\Log::info($this->log.'updateTypeByText|type:'.$data['type'].'||search:'.$data['text']);
+			
+			//Remember that "deleted comments" are not included
+			$params = [
+				"filter" => [
+					"search" => $data['text'],
+					"type" => null //ONLY NULL (Old comments)
+				]
+			];
+
+			//Only with this entity
+			if(!is_null($commentableType))
+				$params["filter"]["commentable_type"] = $commentableType;
+			
+			$comments = $this->comment->getItemsBy(json_decode(json_encode($params)));
+
+			\Log::info($this->log.'updateTypeByText|CommentsToUpdate: '.count($comments)." to add Type: ".$data['type']);
+			if(count($comments)>0){
+				//Update Type
+				foreach ($comments as $key => $comment) {
+					$comment->type = $data['type'];
+					$comment->save();
+				}
+			}
+			
+		}
+		
+	}
+
 
 }
