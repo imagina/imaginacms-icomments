@@ -29,13 +29,9 @@ class EloquentCommentRepository extends EloquentCrudRepository implements Commen
   public function filterQuery($query, $filter, $params)
   {
 
-    /**
-     * Note: Add filter name to replaceFilters attribute before replace it
-     *
-     * Example filter Query
-     * if (isset($filter->status)) $query->where('status', $filter->status);
-     *
-     */
+    if (isset($filter->search)) {
+      $query->where('comment', 'like', '%' . $filter->search . '%');
+    }
 
     //Response
     return $query;
