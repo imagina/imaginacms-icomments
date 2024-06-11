@@ -4,34 +4,42 @@ namespace Modules\Icomments\Entities;
 
 use Modules\Core\Icrud\Entities\CrudModel;
 use Modules\Media\Support\Traits\MediaRelation;
+use Stancl\Tenancy\Database\Concerns\BelongsToTenant;
 
 class Comment extends CrudModel
 {
-    
-    use MediaRelation;
+    use MediaRelation, BelongsToTenant;
 
     protected $table = 'icomments__comments';
+
     public $transformer = 'Modules\Icomments\Transformers\CommentTransformer';
+
+    public $repository = 'Modules\Icomments\Repositories\CommentRepository';
+
     public $requestValidation = [
         'create' => 'Modules\Icomments\Http\Requests\CreateCommentRequest',
         'update' => 'Modules\Icomments\Http\Requests\UpdateCommentRequest',
-      ];
-    
-     protected $fillable = [
-        'comment',
-        'approved',
-        'guest_name',
-        'commentable_type',
-        'guest_email',
-        'user_id',
-        'options'
     ];
 
-    protected $with = ['commenter', 'commentable'];
+  protected $fillable = [
+    'comment',
+    'approved',
+    'internal',
+    'commentable_type',
+    'commentable_id',
+    'guest_name',
+    'guest_email',
+    'user_id',
+    'options',
+    "type"
+  ];
+
+    //protected $with = ['commenter', 'commentable'];
     protected $casts = [
         'approved' => 'boolean',
-        'options' => 'array'
+        'options' => 'array',
     ];
+
     protected $fakeColumns = ['options'];
 
     public function commenter()
@@ -48,19 +56,11 @@ class Comment extends CrudModel
     }
 
     /**
-     * Returns all comments that this comment is the parent of.
-     */
-    public function children()
-    {
-        return $this->hasMany(Comment::class, 'child_id');
-    }
-
-    /**
      * Returns the comment to which this comment belongs to.
      */
     public function parent()
     {
-        return $this->belongsTo(Comment::class, 'child_id');
+        return $this->belongsTo(Comment::class, 'parent_id');
     }
 
     public function user()
@@ -70,14 +70,10 @@ class Comment extends CrudModel
         return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User");
     }
 
-    public function getOptionsAttribute($value)
+    public function userProfile()
     {
-        return json_decode($value);
-    }
+        $driver = config('asgard.user.config.driver');
 
-    public function setOptionsAttribute($value)
-    {
-        $this->attributes['options'] = json_encode($value);
+        return $this->belongsTo("Modules\\User\\Entities\\{$driver}\\User", 'user_id');
     }
-
 }

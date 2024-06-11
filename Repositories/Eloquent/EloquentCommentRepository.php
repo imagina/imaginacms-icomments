@@ -2,22 +2,24 @@
 
 namespace Modules\Icomments\Repositories\Eloquent;
 
-use Modules\Icomments\Repositories\CommentRepository;
 use Modules\Core\Icrud\Repositories\Eloquent\EloquentCrudRepository;
+use Modules\Icomments\Repositories\CommentRepository;
 
 class EloquentCommentRepository extends EloquentCrudRepository implements CommentRepository
 {
-  /**
-   * Filter names to replace
-   * @var array
-   */
-  protected $replaceFilters = [];
+    /**
+     * Filter names to replace
+     *
+     * @var array
+     */
+    protected $replaceFilters = [];
 
-  /**
-   * Relation names to replace
-   * @var array
-   */
-  protected $replaceSyncModelRelations = [];
+    /**
+     * Relation names to replace
+     *
+     * @var array
+     */
+    protected $replaceSyncModelRelations = [];
 
   /**
    * Filter query
@@ -26,43 +28,38 @@ class EloquentCommentRepository extends EloquentCrudRepository implements Commen
    * @param $filter
    * @return mixed
    */
-  public function filterQuery($query, $filter)
+  public function filterQuery($query, $filter, $params)
   {
 
-    /**
-     * Note: Add filter name to replaceFilters attribute before replace it
-     *
-     * Example filter Query
-     * if (isset($filter->status)) $query->where('status', $filter->status);
-     *
-     */
+    if (isset($filter->search)) {
+      $query->where('comment', 'like', '%' . $filter->search . '%');
+    }
 
-    //Response
-    return $query;
-  }
-
-  /**
-   * Method to sync Model Relations
-   *
-   * @param $model ,$data
-   * @return $model
-   */
-  public function syncModelRelations($model, $data)
-  {
-    //Get model relations data from attribute of model
-    $modelRelationsData = ($model->modelRelations ?? []);
+        //Response
+        return $query;
+    }
 
     /**
-     * Note: Add relation name to replaceSyncModelRelations attribute before replace it
+     * Method to sync Model Relations
      *
-     * Example to sync relations
-     * if (array_key_exists(<relationName>, $data)){
-     *    $model->setRelation(<relationName>, $model-><relationName>()->sync($data[<relationName>]));
-     * }
-     *
+     * @param $model ,$data
+     * @return $model
      */
+    public function syncModelRelations($model, $data)
+    {
+        //Get model relations data from attribute of model
+        $modelRelationsData = ($model->modelRelations ?? []);
 
-    //Response
-    return $model;
-  }
+        /**
+         * Note: Add relation name to replaceSyncModelRelations attribute before replace it
+         *
+         * Example to sync relations
+         * if (array_key_exists(<relationName>, $data)){
+         *    $model->setRelation(<relationName>, $model-><relationName>()->sync($data[<relationName>]));
+         * }
+         */
+
+        //Response
+        return $model;
+    }
 }

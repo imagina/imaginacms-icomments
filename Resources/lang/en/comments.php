@@ -18,7 +18,8 @@ return [
     'form' => [
     ],
     'messages' => [
-        'not infor' => 'There is no information available'
+        'for' => 'For',
+        'not infor' => 'There is no information available',
     ],
     'validation' => [
     ],

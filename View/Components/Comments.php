@@ -6,57 +6,39 @@ use Illuminate\View\Component;
 
 class Comments extends Component
 {
-
-
   public $view;
   public $items;
   public $params;
   public $model;
   public $approved;
+  public $showRating;
 
   /**
    * Create a new component instance.
    *
    * @return void
    */
-  public function __construct($layout = "comments-layout-1", $model, $approved = false,$params = [])
+  public function __construct($model, $approved = false, $showRating = true, $params = [], $layout = "comments-layout-1")
   {
 
     $this->view = "icomments::frontend.components.comments.layouts.$layout.index";
     $this->model = $model;
     $this->approved = $approved;
     $this->params = $params;
+    $this->showRating = $showRating;
 
     $this->getItems();
-    
   }
 
-  private function getItems(){
-
-    /*
-    * Option 1 - Require add trait with relations in the model (Example Trait WithComments - Icommerce Module)
-    */
-    if($this->approved)
+  private function getItems()
+  {
+    if ($this->approved) {
       $this->items = $this->model->approvedComments;
-    else
+    } else {
       $this->items = $this->model->comments;
-   
-
-    /*
-    * Option 2 - Just testing
-    */
-    /*
-    $this->params['filter']['commentableType'] = get_class($this->model);
-    $this->params['filter']['commentableId'] = $this->model->id ;
-    
-    $repository = app("Modules\Icomments\Repositories\CommentRepository");
-    $this->items = $repository->getItemsBy(json_decode(json_encode($this->params)));
-    */
-
-    // In View
-    //<x-icomments::comments :model="$product" :params="['filter' => ['approved' => true]]"/>
-
+    }
   }
+
   /**
    * Get the view / contents that represent the component.
    *
@@ -66,5 +48,4 @@ class Comments extends Component
   {
     return view($this->view);
   }
-
 }

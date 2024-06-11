@@ -8,7 +8,11 @@ class CreateCommentRequest extends BaseFormRequest
 {
     public function rules()
     {
-        return [];
+        return [
+            'comment' => 'required',
+            'commentable_type' => 'required',
+            'commentable_id' => 'required',
+        ];
     }
 
     public function translationRules()
@@ -23,7 +27,11 @@ class CreateCommentRequest extends BaseFormRequest
 
     public function messages()
     {
-        return [];
+        return [
+            'comment.required' => trans('requestable::common.messages.field required'),
+            'commentable_type.required' => trans('requestable::common.messages.field required'),
+            'commentable_id.required' => trans('requestable::common.messages.field required'),
+        ];
     }
 
     public function translationMessages()
@@ -31,8 +39,8 @@ class CreateCommentRequest extends BaseFormRequest
         return [];
     }
 
-    public function getValidator(){
+    public function getValidator()
+    {
         return $this->getValidatorInstance();
     }
-    
 }
